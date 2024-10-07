@@ -1,5 +1,6 @@
 package com.clonemovie.Cinemaproject.DTO;
 
+import com.clonemovie.Cinemaproject.domain.Theater;
 import lombok.Data;
 
 public class TheaterDTO {

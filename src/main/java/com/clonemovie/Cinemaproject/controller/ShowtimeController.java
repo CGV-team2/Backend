@@ -1,5 +1,6 @@
 package com.clonemovie.Cinemaproject.controller;
 
+import com.clonemovie.Cinemaproject.DTO.ShowTimeDTO.*;
 import com.clonemovie.Cinemaproject.domain.Movie;
 import com.clonemovie.Cinemaproject.domain.Screen;
 import com.clonemovie.Cinemaproject.domain.Showtime;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/showtimes")
@@ -25,11 +28,24 @@ public class ShowtimeController {
 
 
     @PostMapping("/save")
-    public Showtime saveShowtime(@RequestParam String startTime, @RequestParam Long screenId, @RequestParam Long movieId) {
-        // Screen과 Movie는 서비스에서 ID로 조회
+    public ShowTimeResponse saveShowtime(@RequestParam String startTime,
+                                         @RequestParam Long screenId,
+                                         @RequestParam Long movieId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime startDateTime;
+
+        try {
+            startDateTime = LocalDateTime.parse(startTime, formatter);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid start time format. Use 'yyyy-MM-dd HH:mm'.");
+        }
+
         Screen screen = screenService.getScreenById(screenId);
+        if(screen == null) return null;
         Movie movie = movieServices.getMovieByMovieId(movieId);
-        LocalDateTime startDateTime = LocalDateTime.parse(startTime);
-        return showtimeService.saveShowtime(startDateTime, screen, movie);
+        if(movie == null) return null;
+        Showtime showtime = showtimeService.saveShowtime(startDateTime, screen, movie);
+        if(showtime == null) return null;
+        return new ShowTimeResponse(showtime);
     }
 }

@@ -20,7 +20,7 @@ public class ShowtimeService {
 
     public Showtime saveShowtime(LocalDateTime startTime, Screen screen, Movie movie) {
         Showtime showtime = new Showtime(startTime, screen, movie);
-        return showtimeRepository.save(showtime);  // 상영 시간 저장
+        return showtimeRepository.save(showtime);
     }
 
     public Showtime findById(Long id) {

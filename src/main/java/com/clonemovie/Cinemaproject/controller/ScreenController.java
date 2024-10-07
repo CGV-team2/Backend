@@ -1,5 +1,7 @@
 package com.clonemovie.Cinemaproject.controller;
 
+import com.clonemovie.Cinemaproject.DTO.ScreenDTO;
+import com.clonemovie.Cinemaproject.DTO.ScreenDTO.*;
 import com.clonemovie.Cinemaproject.domain.Screen;
 import com.clonemovie.Cinemaproject.domain.Theater;
 import com.clonemovie.Cinemaproject.repository.ScreenRepository;
@@ -27,11 +29,15 @@ public class ScreenController {
     }
 
     @PostMapping("/save")
-    public Screen saveScreen(@RequestParam String name, @RequestParam Long theaterId) {
+    public ResponseScreen saveScreen(@RequestParam String name, @RequestParam Long theaterId) {
         Theater theater = theaterService.getTheaterById(theaterId);
         if(theater == null){
             return null;
         }
-        return screenService.saveScreen(name, theater);
+        Screen screen = screenService.saveScreen(name, theater);
+        if(screen == null){
+            return null;
+        }
+        return new ResponseScreen(screen);
     }
 }

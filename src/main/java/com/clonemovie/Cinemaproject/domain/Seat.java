@@ -16,7 +16,7 @@ public class Seat {
     @Getter @Setter
     private boolean isReserved; // 예약
 
-    @ManyToOne
+    @ManyToOne @Getter @Setter
     @JoinColumn(name = "showtime_id")
     private Showtime showtime; // 상영 시간
 
