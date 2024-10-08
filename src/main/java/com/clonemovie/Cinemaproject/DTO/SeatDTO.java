@@ -1,9 +1,6 @@
 package com.clonemovie.Cinemaproject.DTO;
 
-import com.clonemovie.Cinemaproject.domain.Member;
-import com.clonemovie.Cinemaproject.domain.Screen;
 import com.clonemovie.Cinemaproject.domain.Seat;
-import com.clonemovie.Cinemaproject.domain.Showtime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -23,10 +20,10 @@ public class SeatDTO {
         public ResponseSeat(Seat seat) {
             this.id = seat.getId();
             this.seatNumber = seat.getSeatNumber();
-            this.showtimeDate = seat.getShowtime().getStartTime();
-            this.screenName = seat.getScreen().getName();
+            this.showtimeDate = seat.getShowTime();
+            this.screenName = seat.getScreenName();
             this.memberName = seat.getMember().getName();
-            this.movieName = seat.getShowtime().getMovie().getTitle();
+            this.movieName = seat.getMovieName();
         }
     }
 }

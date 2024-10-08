@@ -1,9 +1,6 @@
 package com.clonemovie.Cinemaproject.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,15 +27,15 @@ public class Member {
     @Setter
     private String email;
 
-    private String date_of_birth;
+    @Getter @Setter
+    private String birth;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Member(String userid, String password, String name, String date_of_birth) {
+    public Member(String userid, String password, String name) {
         this.user_id = userid;
         this.setPassword(password);
         this.name = name;
-        this.date_of_birth = date_of_birth;
     }
 
     public void setPassword(String password) {
