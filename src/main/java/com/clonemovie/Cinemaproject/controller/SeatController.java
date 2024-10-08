@@ -21,13 +21,12 @@ public class SeatController {
     private SeatService seatService;
 
     @PostMapping("/book")
-    public ResponseSeat bookTicket(@RequestHeader("Authorization") String authorizationHeader,
+    public ResponseSeat bookTicket(@RequestHeader("Authorization") String token,
                                    @RequestParam String movieName,
                                    @RequestParam String screenName,
                                    @RequestParam LocalDateTime showtime,
-                                   @RequestParam String seatNumber,
-                                   @RequestParam Long memberId) {
-        Member member = memberService.findById(memberId);
+                                   @RequestParam String seatNumber) {
+        Member member = memberService.tokenToMember(token);
         if(member == null) {
             throw new RuntimeException("유저가 존재하지 않습니다.");
         }

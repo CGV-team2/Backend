@@ -3,6 +3,7 @@ package com.clonemovie.Cinemaproject.service;
 import com.clonemovie.Cinemaproject.domain.Member;
 import com.clonemovie.Cinemaproject.exception.IdNotFoundException;
 import com.clonemovie.Cinemaproject.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
