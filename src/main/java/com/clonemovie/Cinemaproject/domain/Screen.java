@@ -23,7 +23,7 @@ public class Screen {
     @JoinColumn(name = "theater_id")
     private Theater theater;  // 극장과의 연관 관계 (극장에 속한 상영관)
 
-    @OneToMany(mappedBy = "screen", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "screen")
     @Getter @Setter
     private List<Showtime> showtimes;  // 상영 시간 목록
 

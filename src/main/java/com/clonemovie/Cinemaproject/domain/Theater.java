@@ -20,7 +20,7 @@ public class Theater {
     private String location;
 
     // Theater : Screen = 1:N
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "theater")
     private List<Screen> screens;
 
     public Long getTheaterId() {

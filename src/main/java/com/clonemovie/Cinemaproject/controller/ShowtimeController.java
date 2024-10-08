@@ -26,7 +26,7 @@ public class ShowtimeController {
     @Autowired
     private MovieServices movieServices;
 
-    @PostMapping("/save")
+    @PostMapping()
     public ShowTimeResponse saveShowtime(@RequestParam LocalDateTime startTime,
                                          @RequestParam Long screenId,
                                          @RequestParam Long movieId) {

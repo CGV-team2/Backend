@@ -25,7 +25,7 @@ public class Showtime {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "showtime")
     @Getter @Setter
     private List<Seat> seats;  // 좌석 목록
 

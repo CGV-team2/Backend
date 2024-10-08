@@ -30,12 +30,15 @@ public class Member {
     @Setter
     private String email;
 
+    private String date_of_birth;
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Member(String userid, String password, String name) {
+    public Member(String userid, String password, String name, String date_of_birth) {
         this.user_id = userid;
         this.setPassword(password);
         this.name = name;
+        this.date_of_birth = date_of_birth;
     }
 
     public void setPassword(String password) {
