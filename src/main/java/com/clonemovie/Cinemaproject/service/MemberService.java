@@ -33,10 +33,10 @@ public class MemberService {
     }
 
     @Transactional
-    public Member signUp(String userId, String password, String name, String date_of_birth){
+    public Member signUp(String userId, String password, String name){
         Member member = memberRepository.findByUserId(userId);
         if(member!=null) return null;
-        return memberRepository.save(new Member(userId, password, name, date_of_birth));
+        return memberRepository.save(new Member(userId, password, name));
     }
 
     public Member findById(Long id){

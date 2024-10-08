@@ -13,7 +13,6 @@ public class MemberDTO {
         private String name;
         private String user_id;
         private String password;
-        private String date_of_birth;
     }
 
     @Data

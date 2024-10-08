@@ -30,13 +30,17 @@ public class Seat {
     @Getter @Setter
     private Member member;
 
+    @Getter @Setter
+    private String theaterName;
+
     public Seat(){}
 
-    public Seat(String seatNumber, LocalDateTime showtime, String screenName, Member member, String movieName) {
+    public Seat(String seatNumber, LocalDateTime showtime, String screenName, Member member, String movieName, String theaterName) {
         this.seatNumber = seatNumber;
         this.showTime = showtime;
         this.screenName = screenName;
         this.member = member;
         this.movieName = movieName;
+        this.theaterName = theaterName;
     }
 }

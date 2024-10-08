@@ -16,6 +16,7 @@ public class SeatDTO {
         private String screenName;
         public String memberName;
         public String movieName;
+        public String theaterName;
 
         public ResponseSeat(Seat seat) {
             this.id = seat.getId();
@@ -24,6 +25,7 @@ public class SeatDTO {
             this.screenName = seat.getScreenName();
             this.memberName = seat.getMember().getName();
             this.movieName = seat.getMovieName();
+            this.theaterName = seat.getTheaterName();
         }
     }
 }

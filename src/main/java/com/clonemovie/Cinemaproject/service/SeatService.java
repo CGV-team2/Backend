@@ -20,8 +20,8 @@ public class SeatService {
     @Autowired
     private MemberService memberService;
 
-    public List<Seat> getBookedSeats(LocalDateTime showtime) {
-        List<Seat> seats = seatRepository.findSeatsByShowTime(showtime);
+    public List<Seat> getBookedSeats(LocalDateTime showtime, String screenName, String movieName, String theaterName) {
+        List<Seat> seats = seatRepository.findSeatsByShowTimeAndMovieNameAndScreenNameAndTheaterName(showtime, movieName, screenName, theaterName);
         List<Seat> bookedSeats = new ArrayList<>();
         for (Seat seat : seats) {
             bookedSeats.add(seat);
@@ -29,8 +29,8 @@ public class SeatService {
         return bookedSeats;
     }
 
-    public boolean isBookAvailable(LocalDateTime showtime, String seatNumber) {
-        Seat seat =  seatRepository.findByShowTimeAndSeatNumber(showtime, seatNumber);
+    public boolean isBookAvailable(LocalDateTime showtime, String seatNumber, String movieName, String theaterName, String screenName) {
+        Seat seat =  seatRepository.findByShowTimeAndSeatNumberAndMovieNameAndScreenNameAndTheaterName(showtime, seatNumber, movieName, screenName, theaterName);
 
         if(seat != null) {
             return true;
@@ -39,12 +39,12 @@ public class SeatService {
         }
     }
 
-    public Seat bookSeat(LocalDateTime showtime, String seatNumber, Member member, String screenName, String movieName) {
-        if(isBookAvailable(showtime, seatNumber)) {
+    public Seat bookSeat(LocalDateTime showtime, String seatNumber, Member member, String screenName, String movieName, String theaterName) {
+        if(isBookAvailable(showtime, seatNumber, movieName, screenName, theaterName)) {
             return null;
         }
 
-        Seat seat = new Seat(seatNumber, showtime, screenName, member, movieName);
+        Seat seat = new Seat(seatNumber, showtime, screenName, member, movieName, theaterName);
 
         return seatRepository.save(seat);
     }

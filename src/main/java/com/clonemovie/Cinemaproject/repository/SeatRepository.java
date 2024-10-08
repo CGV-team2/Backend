@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-    Seat findByShowTimeAndSeatNumber(LocalDateTime showTime, String seatNumber);
-    List<Seat> findSeatsByShowTime(LocalDateTime showTime);
+    Seat findByShowTimeAndSeatNumberAndMovieNameAndScreenNameAndTheaterName(LocalDateTime showTime, String seatNumber, String movieName, String screenName, String theaterName);
+    List<Seat> findSeatsByShowTimeAndMovieNameAndScreenNameAndTheaterName(LocalDateTime showTime, String movieName, String screenName, String theaterName);
 }

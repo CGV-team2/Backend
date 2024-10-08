@@ -16,8 +16,7 @@ public class MemberController {
         Member member = memberService.signUp(
                 request.getUser_id(),
                 request.getPassword(),
-                request.getName(),
-                request.getDate_of_birth());
+                request.getName());
         if(member == null) return "이미 존재";
         return memberService.login(request.getUser_id(), request.getPassword());
     }
