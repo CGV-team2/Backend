@@ -26,25 +26,16 @@ public class ShowtimeController {
     @Autowired
     private MovieServices movieServices;
 
-
     @PostMapping("/save")
-    public ShowTimeResponse saveShowtime(@RequestParam String startTime,
+    public ShowTimeResponse saveShowtime(@RequestParam LocalDateTime startTime,
                                          @RequestParam Long screenId,
                                          @RequestParam Long movieId) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime startDateTime;
-
-        try {
-            startDateTime = LocalDateTime.parse(startTime, formatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid start time format. Use 'yyyy-MM-dd HH:mm'.");
-        }
 
         Screen screen = screenService.getScreenById(screenId);
         if(screen == null) return null;
         Movie movie = movieServices.getMovieByMovieId(movieId);
         if(movie == null) return null;
-        Showtime showtime = showtimeService.saveShowtime(startDateTime, screen, movie);
+        Showtime showtime = showtimeService.saveShowtime(startTime, screen, movie);
         if(showtime == null) return null;
         return new ShowTimeResponse(showtime);
     }

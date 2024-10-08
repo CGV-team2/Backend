@@ -6,33 +6,31 @@ import lombok.Setter;
 
 @Entity
 public class Seat {
-    @Id
+    @Id @Getter @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter @Setter
-    private String seatNumber; // 번호
-
-    @Getter @Setter
-    private boolean isReserved; // 예약
+    private String seatNumber;
 
     @ManyToOne @Getter @Setter
     @JoinColumn(name = "showtime_id")
     private Showtime showtime; // 상영 시간
 
-    public boolean isReserved() {
-        return isReserved;
-    }
+    @ManyToOne @Getter @Setter
+    @JoinColumn(name = "screen_id")
+    private Screen screen; // 상영관
 
-    public void setReserved(boolean reserved) {
-        isReserved = reserved;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @Getter @Setter
+    private Member member;
 
-    public Showtime getShowtime() {
-        return showtime;
-    }
-
-    public void setShowtime(Showtime showtime) {
+    public Seat(){}
+    public Seat(String seatNumber, Showtime showtime, Screen screen, Member member) {
+        this.seatNumber = seatNumber;
         this.showtime = showtime;
+        this.screen = screen;
+        this.member = member;
     }
 }

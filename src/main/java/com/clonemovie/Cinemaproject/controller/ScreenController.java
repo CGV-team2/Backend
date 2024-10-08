@@ -29,12 +29,15 @@ public class ScreenController {
     }
 
     @PostMapping("/save")
-    public ResponseScreen saveScreen(@RequestParam String name, @RequestParam Long theaterId) {
+    public ResponseScreen saveScreen(@RequestParam String name,
+                                     @RequestParam Long theaterId,
+                                     @RequestParam int seatRows,
+                                     @RequestParam int seatCols) {
         Theater theater = theaterService.getTheaterById(theaterId);
         if(theater == null){
             return null;
         }
-        Screen screen = screenService.saveScreen(name, theater);
+        Screen screen = screenService.saveScreen(name, theater, seatRows, seatCols);
         if(screen == null){
             return null;
         }

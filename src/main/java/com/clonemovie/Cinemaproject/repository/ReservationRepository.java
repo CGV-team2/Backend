@@ -1,9 +1,0 @@
-package com.clonemovie.Cinemaproject.repository;
-
-import com.clonemovie.Cinemaproject.domain.Reservation;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByShowtimeId(Long showtimeId);
-}

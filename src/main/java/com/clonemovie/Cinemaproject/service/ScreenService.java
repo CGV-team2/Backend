@@ -14,8 +14,8 @@ public class ScreenService {
     @Autowired
     private ScreenRepository screenRepository;
 
-    public Screen saveScreen(String name, Theater theater) {
-        Screen screen = new Screen(name, theater);
+    public Screen saveScreen(String name, Theater theater, int seatRows, int seatCols) {
+        Screen screen = new Screen(name, theater, seatRows, seatCols);
         return screenRepository.save(screen);  // 상영관 저장
     }
 

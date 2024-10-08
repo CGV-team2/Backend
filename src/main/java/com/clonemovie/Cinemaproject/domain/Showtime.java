@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Showtime {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -22,6 +24,10 @@ public class Showtime {
     @ManyToOne @Getter @Setter
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @OneToMany(mappedBy = "showtime", cascade = CascadeType.ALL)
+    @Getter @Setter
+    private List<Seat> seats;  // 좌석 목록
 
     public Showtime() {}
 

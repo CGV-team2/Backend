@@ -16,12 +16,16 @@ public class ScreenDTO {
         private String screenName;
         private String theater;
         private List<Showtime> showtimes;
+        private int rows;
+        private int cols;
 
         public ResponseScreen(Screen screen) {
             this.screenId = screen.getScreenId();
             this.screenName = screen.getName();
             this.theater = screen.getTheater().getName();
             this.showtimes = screen.getShowtimes();
+            this.rows = screen.getSeatRows();
+            this.cols = screen.getSeatCols();
         }
     }
 }

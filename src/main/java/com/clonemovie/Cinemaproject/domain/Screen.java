@@ -16,6 +16,9 @@ public class Screen {
     @Getter @Setter
     private String name;  // 상영관 이름
 
+    @Getter @Setter
+    private int seatRows, seatCols;
+
     @ManyToOne @Getter @Setter
     @JoinColumn(name = "theater_id")
     private Theater theater;  // 극장과의 연관 관계 (극장에 속한 상영관)
@@ -26,8 +29,10 @@ public class Screen {
 
     public Screen() {}
 
-    public Screen(String name, Theater theater) {
+    public Screen(String name, Theater theater, int seatRows, int seatCols) {
         this.name = name;
         this.theater = theater;
+        this.seatRows = seatRows;
+        this.seatCols = seatCols;
     }
 }
