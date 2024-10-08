@@ -1,9 +1,6 @@
 package com.clonemovie.Cinemaproject.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +26,9 @@ public class Member {
     private String phone_number;
     @Setter
     private String email;
+
+    @Getter @Setter
+    private String birth;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

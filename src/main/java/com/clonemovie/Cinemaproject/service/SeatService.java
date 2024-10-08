@@ -1,14 +1,12 @@
 package com.clonemovie.Cinemaproject.service;
 
-import com.clonemovie.Cinemaproject.DTO.ShowTimeDTO;
-import com.clonemovie.Cinemaproject.domain.Member;
-import com.clonemovie.Cinemaproject.domain.Screen;
-import com.clonemovie.Cinemaproject.domain.Seat;
-import com.clonemovie.Cinemaproject.domain.Showtime;
+import com.clonemovie.Cinemaproject.domain.*;
+import com.clonemovie.Cinemaproject.repository.MemberRepository;
 import com.clonemovie.Cinemaproject.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +16,12 @@ public class SeatService {
     @Autowired
     private SeatRepository seatRepository;
     @Autowired
-    private ShowtimeService showtimeService;
+    private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
 
-    public List<Seat> getBookedSeats(Long showtimeId) {
-        List<Seat> seats = seatRepository.findByShowtime_Id(showtimeId);
+    public List<Seat> getBookedSeats(LocalDateTime showtime) {
+        List<Seat> seats = seatRepository.findSeatsByShowTime(showtime);
         List<Seat> bookedSeats = new ArrayList<>();
         for (Seat seat : seats) {
             bookedSeats.add(seat);
@@ -31,8 +29,8 @@ public class SeatService {
         return bookedSeats;
     }
 
-    public boolean isBookAvailable(Showtime showtime, String seatNumber) {
-        Seat seat =  seatRepository.findByShowtime_IdAndSeatNumber(showtime.getId(), seatNumber);
+    public boolean isBookAvailable(LocalDateTime showtime, String seatNumber) {
+        Seat seat =  seatRepository.findByShowTimeAndSeatNumber(showtime, seatNumber);
 
         if(seat != null) {
             return true;
@@ -41,12 +39,12 @@ public class SeatService {
         }
     }
 
-    public Seat bookSeat(Showtime showtime, String seatNumber, Member member, Screen screen) {
+    public Seat bookSeat(LocalDateTime showtime, String seatNumber, Member member, String screenName, String movieName) {
         if(isBookAvailable(showtime, seatNumber)) {
             return null;
         }
 
-        Seat seat = new Seat(seatNumber, showtime, screen, member);
+        Seat seat = new Seat(seatNumber, showtime, screenName, member, movieName);
 
         return seatRepository.save(seat);
     }
