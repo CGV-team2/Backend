@@ -1,6 +1,6 @@
 package com.clonemovie.Cinemaproject.controller;
 
-import com.clonemovie.Cinemaproject.DTO.SeatDTO.ResponseSeat;
+import com.clonemovie.Cinemaproject.DTO.SeatDTO;
 import com.clonemovie.Cinemaproject.domain.Member;
 import com.clonemovie.Cinemaproject.domain.Seat;
 import com.clonemovie.Cinemaproject.service.MemberService;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/seats")
@@ -24,24 +25,34 @@ public class SeatController {
     private SeatService seatService;
 
     @PostMapping("/book")
-    public ResponseEntity<ResponseSeat> bookTicket(@RequestHeader("Authorization") String token,
-                                                   @RequestParam String movieName,
-                                                   @RequestParam String screenName,
-                                                   @RequestParam LocalDateTime showtime,
-                                                   @RequestParam String theaterName,
-                                                   @RequestParam String seatNumber) {
+    public ResponseEntity<List<SeatDTO.ResponseSeat>> bookTickets(@RequestHeader("Authorization") String token,
+                                                                  @RequestParam String movieName,
+                                                                  @RequestParam String screenName,
+                                                                  @RequestParam LocalDateTime showtime,
+                                                                  @RequestParam String theaterName,
+                                                                  @RequestParam List<String> seatNumbers) {
         try {
+            // 회원 인증
             Member member = memberService.tokenToMember(token);
             if (member == null) {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED); // 401 Unauthorized
             }
 
-            if (seatService.isBookAvailable(showtime, seatNumber, movieName, theaterName, screenName)) {
-                return new ResponseEntity<>(null, HttpStatus.CONFLICT); // 409 Conflict
+            // 좌석별 예약 가능 여부 확인
+            for (String seatNumber : seatNumbers) {
+                if (seatService.isBookAvailable(showtime, seatNumber, movieName, theaterName, screenName)) {
+                    return new ResponseEntity<>(null, HttpStatus.CONFLICT); // 409 Conflict
+                }
             }
 
-            Seat seat = seatService.bookSeat(showtime, seatNumber, member, screenName, movieName, theaterName);
-            return new ResponseEntity<>(new ResponseSeat(seat), HttpStatus.OK); // 200 OK
+            // 모든 좌석 예약 진행
+            List<SeatDTO.ResponseSeat> bookedSeats = seatNumbers.stream()
+                    .map(seatNumber -> {
+                        Seat seat = seatService.bookSeat(showtime, seatNumber, member, screenName, movieName, theaterName);
+                        return new SeatDTO.ResponseSeat(seat);
+                    }).collect(Collectors.toList());
+
+            return new ResponseEntity<>(bookedSeats, HttpStatus.OK); // 200 OK
 
         } catch (Exception e) {
             System.err.println("좌석 예약 중 오류 발생: " + e.getMessage());
@@ -49,6 +60,7 @@ public class SeatController {
         }
     }
 
+    // 예약 가능한 좌석 조회 메서드
     @GetMapping("/available")
     public ResponseEntity<List<Seat>> getAvailableSeats(@RequestParam LocalDateTime showtime,
                                                         @RequestParam String screenName,

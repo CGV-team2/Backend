@@ -39,6 +39,10 @@ public class SeatService {
         }
     }
 
+    public List<Seat> getSeatByMember(Member member) {
+        return seatRepository.findSeatsByMember(member);
+    }
+
     public Seat bookSeat(LocalDateTime showtime, String seatNumber, Member member, String screenName, String movieName, String theaterName) {
         if(isBookAvailable(showtime, seatNumber, movieName, screenName, theaterName)) {
             return null;

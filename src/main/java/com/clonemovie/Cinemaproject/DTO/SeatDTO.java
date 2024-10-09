@@ -15,6 +15,7 @@ public class SeatDTO {
         private LocalDateTime showtimeDate;
         private String screenName;
         public String memberName;
+        public String userId;
         public String movieName;
         public String theaterName;
 
@@ -23,6 +24,7 @@ public class SeatDTO {
             this.seatNumber = seat.getSeatNumber();
             this.showtimeDate = seat.getShowTime();
             this.screenName = seat.getScreenName();
+            this.userId = seat.getMember().getUser_id();
             this.memberName = seat.getMember().getName();
             this.movieName = seat.getMovieName();
             this.theaterName = seat.getTheaterName();

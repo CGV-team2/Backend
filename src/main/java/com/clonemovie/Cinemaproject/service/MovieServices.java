@@ -54,7 +54,6 @@ public class MovieServices {
 
                 if(movieRepository.findByMovieId(movieId) == null) { //저장되어 있지않은 영화 저장
                     String title = movieNode.get("title").asText();
-                    String originalTitle = movieNode.get("original_title").asText();
                     String overview = movieNode.get("overview").asText();
                     Double popularity = movieNode.get("popularity").asDouble();
                     String backdropPath = movieNode.get("backdrop_path").asText();
@@ -62,7 +61,7 @@ public class MovieServices {
                     String releaseDate = movieNode.get("release_date").asText();
                     String posterPath = movieNode.get("poster_path").asText();
                     double voteAverage = movieNode.get("vote_average").asDouble();
-                    String originalLanguage = movieNode.get("original_language").asText();
+                    String originalLanguage = movieNode.get("original_language").asText(); // 왜 왜 왜 나 배고프단말이야아 머리도 말려야하는데
 
                     List<String> movieGenres = new ArrayList<>(); // 영화 장르 리스트
                     JsonNode genreNodes = movieNode.get("genre_ids");
