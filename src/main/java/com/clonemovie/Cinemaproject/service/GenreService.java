@@ -2,6 +2,7 @@ package com.clonemovie.Cinemaproject.service;
 
 import com.clonemovie.Cinemaproject.domain.Genre;
 import com.clonemovie.Cinemaproject.repository.GenreRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class GenreService {
@@ -34,12 +34,20 @@ public class GenreService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            genreRepository.deleteAll();
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("API 요청 실패: " + response.body());
+            }
+
+            genreRepository.deleteAll(); // 이전 장르 데이터 삭제
 
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, List<Map<String, Object>>> responseBody = objectMapper.readValue(response.body(), Map.class);
 
             List<Map<String, Object>> genres = responseBody.get("genres");
+
+            if (genres == null || genres.isEmpty()) {
+                throw new RuntimeException("장르 데이터가 없습니다.");
+            }
 
             for (Map<String, Object> genreData : genres) {
                 Long id = ((Integer) genreData.get("id")).longValue();
@@ -50,7 +58,11 @@ public class GenreService {
             }
 
         } catch (Exception e) {
+            // 예외 발생 시 로그 출력 및 사용자 정의 예외 처리
+            System.err.println("장르 업데이트 중 오류 발생: " + e.getMessage());
             e.printStackTrace();
+            // 예외를 던져서 호출자에게 알림
+            throw new RuntimeException("장르 업데이트에 실패했습니다.", e);
         }
     }
 

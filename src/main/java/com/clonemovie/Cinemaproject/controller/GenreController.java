@@ -4,6 +4,7 @@ import com.clonemovie.Cinemaproject.DTO.GenreDTO.*;
 import com.clonemovie.Cinemaproject.domain.Genre;
 import com.clonemovie.Cinemaproject.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    @PostMapping("/update")
+    @GetMapping("/update")
     public List<ResponseGenre> updateGenres() {
         genreService.fetchAndSaveGenres();
 
