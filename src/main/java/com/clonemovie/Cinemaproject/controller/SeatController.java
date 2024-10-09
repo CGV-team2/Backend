@@ -26,11 +26,7 @@ public class SeatController {
 
     @PostMapping("/book")
     public ResponseEntity<List<SeatDTO.ResponseSeat>> bookTickets(@RequestHeader("Authorization") String token,
-                                                                  @RequestParam String movieName,
-                                                                  @RequestParam String screenName,
-                                                                  @RequestParam LocalDateTime showtime,
-                                                                  @RequestParam String theaterName,
-                                                                  @RequestParam List<String> seatNumbers) {
+                                                                  @RequestBody SeatDTO.BookingRequest bookingRequest) {
         try {
             // 회원 인증
             Member member = memberService.tokenToMember(token);
@@ -39,16 +35,16 @@ public class SeatController {
             }
 
             // 좌석별 예약 가능 여부 확인
-            for (String seatNumber : seatNumbers) {
-                if (seatService.isBookAvailable(showtime, seatNumber, movieName, theaterName, screenName)) {
+            for (String seatNumber : bookingRequest.getSeatNumbers()) {
+                if (seatService.isBookAvailable(bookingRequest.getShowtime(), seatNumber, bookingRequest.getMovieName(), bookingRequest.getTheaterName(), bookingRequest.getScreenName())) {
                     return new ResponseEntity<>(null, HttpStatus.CONFLICT); // 409 Conflict
                 }
             }
 
             // 모든 좌석 예약 진행
-            List<SeatDTO.ResponseSeat> bookedSeats = seatNumbers.stream()
+            List<SeatDTO.ResponseSeat> bookedSeats = bookingRequest.getSeatNumbers().stream()
                     .map(seatNumber -> {
-                        Seat seat = seatService.bookSeat(showtime, seatNumber, member, screenName, movieName, theaterName);
+                        Seat seat = seatService.bookSeat(bookingRequest.getShowtime(), seatNumber, member, bookingRequest.getScreenName(), bookingRequest.getMovieName(), bookingRequest.getTheaterName());
                         return new SeatDTO.ResponseSeat(seat);
                     }).collect(Collectors.toList());
 
@@ -59,6 +55,7 @@ public class SeatController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); // 500 Internal Server Error
         }
     }
+
 
     // 예약 가능한 좌석 조회 메서드
     @GetMapping("/available")

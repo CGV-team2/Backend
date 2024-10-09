@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SeatDTO {
     @Data
@@ -29,5 +30,14 @@ public class SeatDTO {
             this.movieName = seat.getMovieName();
             this.theaterName = seat.getTheaterName();
         }
+    }
+
+    @Data
+    public static class BookingRequest{
+        private String movieName;
+        private String theaterName;
+        private LocalDateTime showtime;
+        private String screenName;
+        private List<String> seatNumbers;
     }
 }
