@@ -87,4 +87,8 @@ public class MovieServices {
     public Movie getMovieByMovieId(Long movieId){
         return movieRepository.findByMovieId(movieId);
     }
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
 }

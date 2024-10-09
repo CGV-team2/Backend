@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class MovieController {
 
@@ -18,9 +21,13 @@ public class MovieController {
 
     // 영화 데이터 업데이트
     @GetMapping("/update-movies")
-    public String updateMovies() {
-        movieServices.updateNowPlayingMovies();
-        return "현재 상영 중인 영화 데이터가 업데이트되었습니다!";
+    public List<ResponseMovie> updateMovies() {
+        movieServices.updateNowPlayingMovies(); //영화 업데이트
+
+        List<Movie> updatedMovies = movieServices.getAllMovies();
+        return updatedMovies.stream()
+                .map(ResponseMovie::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/movie/getMovieInfo/{movieId}")
