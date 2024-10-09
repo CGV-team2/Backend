@@ -1,5 +1,6 @@
 package com.clonemovie.Cinemaproject.service;
 
+import com.clonemovie.Cinemaproject.domain.Genre;
 import com.clonemovie.Cinemaproject.domain.Movie;
 import com.clonemovie.Cinemaproject.repository.MovieRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,8 +20,10 @@ public class MovieServices {
     @Autowired
     private MovieRepository movieRepository;
 
-    private static final String NowPlaying_API_URL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
+    private static final String NowPlaying_API_URL = "https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&page=1";
     private static final String API_KEY = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkODNmZjdlOWNjYzE0MTkxMGUwNjBjZmM1ZjQzMjllMiIsIm5iZiI6MTcyNjEwODA0My43MDU1MDksInN1YiI6IjY2ZTI0YmM1MDAwMDAwMDAwMDk1MGM3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.njkW7B4TAAGMUBSlXXMI00c5h-5atfuyE2JcnrPtQFs";
+    @Autowired
+    private GenreService genreService;
 
     public void updateNowPlayingMovies() {
         try{
@@ -38,6 +41,13 @@ public class MovieServices {
 
             Set<Long> nowPlayingMovieIds = new HashSet<>();
 
+            List<Genre> allGenres = genreService.getAllGenres(); // 조회
+            Map<Integer, String> genreMap = new HashMap<>();
+
+            for (Genre genre : allGenres) {
+                genreMap.put(genre.getId().intValue(), genre.getName().toString());
+            }
+
             for(JsonNode movieNode: responseBody.get("results")) {
                 Long movieId = movieNode.get("id").asLong();
                 nowPlayingMovieIds.add(movieId); //상영되고 있는 영화 리스트에 추가
@@ -50,12 +60,19 @@ public class MovieServices {
                     String backdropPath = movieNode.get("backdrop_path").asText();
                     boolean adult = movieNode.get("adult").asBoolean();
                     String releaseDate = movieNode.get("release_date").asText();
+                    String posterPath = movieNode.get("poster_path").asText();
+                    double voteAverage = movieNode.get("vote_average").asDouble();
+                    String originalLanguage = movieNode.get("original_language").asText();
 
-                    List<Integer>genreIds = new ArrayList<>();
+                    List<String> movieGenres = new ArrayList<>(); // 영화 장르 리스트
                     JsonNode genreNodes = movieNode.get("genre_ids");
-                    if(genreNodes != null && genreNodes.isArray()) {
-                        for(JsonNode genreNode: genreNodes) {
-                            genreIds.add(genreNode.asInt());
+                    if (genreNodes != null && genreNodes.isArray()) {
+                        for (JsonNode genreNode : genreNodes) {
+                            Integer genreId = genreNode.asInt();
+                            String genreName = genreMap.get(genreId); // 매핑된 장르 이름 가져오기
+                            if (genreName != null) {
+                                movieGenres.add(genreName); // 장르 추가
+                            }
                         }
                     }
 
@@ -67,7 +84,10 @@ public class MovieServices {
                             backdropPath,
                             adult,
                             releaseDate,
-                            genreIds));
+                            movieGenres,
+                            originalLanguage,
+                            posterPath,
+                            voteAverage));
                     movieRepository.save(movie);
                 }
             }
@@ -88,7 +108,7 @@ public class MovieServices {
         return movieRepository.findByMovieId(movieId);
     }
 
-    public List<Movie> getAllMovies() {
+    public List<Movie> getAllMovies(){
         return movieRepository.findAll();
     }
 }

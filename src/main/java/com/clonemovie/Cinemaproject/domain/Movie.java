@@ -31,13 +31,22 @@ public class Movie {
     private String backdropPath;
 
     @Getter @Setter
+    private String posterPath;
+
+    @Getter @Setter
+    private Double voteAverage;
+
+    @Getter @Setter
+    private String originalLanguage;
+
+    @Getter @Setter
     private boolean adult;
 
     @Getter @Setter
     private String releaseDate;
 
     @Getter @Setter @ElementCollection
-    private List<Integer> genreId = new ArrayList<>();
+    private List<String> genres = new ArrayList<>();
 
     // 기본 생성자
     public Movie() {}
@@ -50,7 +59,10 @@ public class Movie {
                  String backdropPath,
                  boolean adult,
                  String releaseDate,
-                 List<Integer> genreId) {
+                 List<String> genres,
+                 String originalLanguage,
+                 String posterPath,
+                 double voteAverage) {
         this.movieId = movieId;
         this.title = title;
         this.popularity = popularity;
@@ -58,6 +70,9 @@ public class Movie {
         this.backdropPath = backdropPath;
         this.adult = adult;
         this.releaseDate = releaseDate;
-        this.genreId = genreId;
+        this.genres = genres;
+        this.originalLanguage = originalLanguage;
+        this.posterPath = posterPath;
+        this.voteAverage = voteAverage;
     }
 }

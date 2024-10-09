@@ -1,5 +1,6 @@
 package com.clonemovie.Cinemaproject.DTO;
 
+import com.clonemovie.Cinemaproject.domain.Genre;
 import com.clonemovie.Cinemaproject.domain.Movie;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,11 +26,14 @@ public class MovieDTO {
         private Long id;
         private Long movieId;
         private String title;
+        private String originalLanguage;
         private String overview;
         private String releaseDate;
         private String backdropPath;
-        private List<Integer> genreIds;
+        private String posterPath;
+        private List<String> genres;
         private Double popularity;
+        private Double voteAverage;
         private boolean adult;
 
         public ResponseMovie(Movie movie){
@@ -39,9 +43,12 @@ public class MovieDTO {
             this.overview = movie.getOverview();
             this.releaseDate = movie.getReleaseDate();
             this.backdropPath = movie.getBackdropPath();
-            this.genreIds = movie.getGenreId();
+            this.genres = movie.getGenres();
             this.popularity = movie.getPopularity();
             this.adult = movie.isAdult();
+            this.posterPath = movie.getPosterPath();
+            this.voteAverage = movie.getVoteAverage();
+            this.originalLanguage = movie.getOriginalLanguage();
         }
     }
 }

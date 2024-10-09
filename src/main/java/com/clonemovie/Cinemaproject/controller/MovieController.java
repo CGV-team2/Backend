@@ -3,6 +3,7 @@ package com.clonemovie.Cinemaproject.controller;
 import com.clonemovie.Cinemaproject.DTO.MovieDTO.*;
 import com.clonemovie.Cinemaproject.domain.Movie;
 import com.clonemovie.Cinemaproject.repository.MovieRepository;
+import com.clonemovie.Cinemaproject.service.GenreService;
 import com.clonemovie.Cinemaproject.service.MovieServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,15 @@ public class MovieController {
 
     @Autowired
     private MovieServices movieServices;
+    @Autowired
+    private GenreService genreService;
 
     // 영화 데이터 업데이트
     @GetMapping("/update-movies")
     public List<ResponseMovie> updateMovies() {
-        movieServices.updateNowPlayingMovies(); //영화 업데이트
+        genreService.fetchAndSaveGenres(); // 장르 업데이트
+
+        movieServices.updateNowPlayingMovies(); // 영화 업데이트
 
         List<Movie> updatedMovies = movieServices.getAllMovies();
         return updatedMovies.stream()
